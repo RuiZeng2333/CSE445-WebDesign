@@ -52,5 +52,28 @@ namespace Assignment5
             Response.Redirect("~/WebDownloadTryIt.aspx", true);
         }
 
+        protected void btnCreateCookie_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtCookieEmail.Text))
+            {
+                AuthHelper.CreateAuthCookie(
+                    txtCookieEmail.Text.Trim(),
+                    ddlCookieRole.SelectedValue
+                );
+                lblCookieResult.Text = "Cookie created successfully!";
+            }
+        }
+
+        protected void btnValidateCookie_Click(object sender, EventArgs e)
+        {
+            if (AuthHelper.ValidateAuthCookie(out string email, out string role))
+            {
+                lblCookieResult.Text = $"Valid cookie!<br>Email: {email}<br>Role: {role}";
+            }
+            else
+            {
+                lblCookieResult.Text = "Invalid or missing authentication cookie";
+            }
+        }
     }
 }

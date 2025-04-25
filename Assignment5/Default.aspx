@@ -71,6 +71,50 @@
             <br />
         </div>
 
+          <!-- Cookie Authentication Test -->
+<div class="card mt-4">
+    <div class="card-body">
+        <h4 class="card-title">Cookie Authentication Test</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Email:</label>
+                    <asp:TextBox ID="txtCookieEmail" runat="server" 
+                        CssClass="form-control" 
+                        placeholder="user@example.com" />
+                </div>
+                <div class="form-group">
+                    <label>Role:</label>
+                    <asp:DropDownList ID="ddlCookieRole" runat="server" 
+                        CssClass="form-control">
+                        <asp:ListItem Value="Member">Member</asp:ListItem>
+                        <asp:ListItem Value="Staff">Staff</asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+                <asp:Button ID="btnCreateCookie" runat="server" 
+                    Text="Create Auth Cookie" 
+                    OnClick="btnCreateCookie_Click" 
+                    CssClass="btn btn-primary mb-2" />
+            </div>
+            
+            <div class="col-md-6">
+                <asp:Button ID="btnValidateCookie" runat="server" 
+                    Text="Validate Cookie" 
+                    OnClick="btnValidateCookie_Click" 
+                    CssClass="btn btn-success mb-2" />
+                <div class="mt-2">
+                    <strong>Validation Result:</strong>
+                    <asp:Label ID="lblCookieResult" runat="server" 
+                        CssClass="text-monospace d-block" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+<br />
+<br />
+</div>
+
           <div style="background: black; height: 5px; margin: 20px 0;"></div>
 
         <!-- Service Access Buttons -->
@@ -120,6 +164,8 @@
             </tbody>
           </table>
         </div>
+
+
       </main>
     </form>
 </body>
