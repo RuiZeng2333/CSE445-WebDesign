@@ -13,5 +13,9 @@ namespace Assignment5
     {
         [OperationContract]
         string WebDownload(string url);
+
+        [OperationContract]
+        byte[] GenerateCouponPdf(string hotelName, string address, int couponCount);
+
     }
 }

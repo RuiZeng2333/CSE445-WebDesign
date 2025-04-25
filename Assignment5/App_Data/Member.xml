@@ -1,16 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Users>
-  <User>
-    <Username>ava@gmail.</Username>
-    <Password>CSE445!!!</Password>
-    <!-- Add more users -->
-  </User>
-  <User>
-    <Username>2538172118@gmail.com</Username>
-    <Password>overwhelming</Password>
-  </User>
-  <User>
-    <Username>2538172118@gmail.com</Username>
-    <Password>overwhelming</Password>
-  </User>
-</Users>
+<Members>
+  <Member>
+    <Email>user@example.com</Email>
+    <Password>hashed_pw</Password>
+    <Role>Member</Role>
+    <DownloadCount>0</DownloadCount>
+    <Tier>Standard</Tier>
+  </Member>
+  <Member>
+    <Email>zhendon4@asu.edu</Email>
+    <Password>RNnvrOjT+i/9rcejp94lPSGqGayBc+xZiVWaX/7v7I8=</Password>
+    <Role>Member</Role>
+  </Member>
+  <Member>
+    <Email>zhendon5@asu.edu</Email>
+    <Password>RNnvrOjT+i/9rcejp94lPSGqGayBc+xZiVWaX/7v7I8=</Password>
+    <Role>Member</Role>
+  </Member>
+  <Member>
+    <Email>zhendon6@asu.edu</Email>
+    <Password>A4ms8IZMH/VW5WNLT0+DDdmElrCyFlI2AGd6EDMyDGA=</Password>
+    <Role>Staff</Role>
+  </Member>
+  <Member>
+    <Email>weiyu5@asu.edu</Email>
+    <Password>RNnvrOjT+i/9rcejp94lPSGqGayBc+xZiVWaX/7v7I8=</Password>
+    <Role>Member</Role>
+  </Member>
+  <Member>
+    <Email>weiyu6@asu.edu</Email>
+    <Password>JzhKWVHAXua/eSpO9XPeGoeTdTAYXCxuQdY/Klq2EUw=</Password>
+    <Role>Staff</Role>
+  </Member>
+  <Member>
+    <Email>sususu@gmail.com</Email>
+    <Password>r+xXTWnZLI6UP35c/Tpeiwdsimup/H55I1HSkRcTuOo=</Password>
+    <Role>Member</Role>
+  </Member>
+  <Member>
+    <Email>yuyuyu@gmail.com</Email>
+    <Password>RNnvrOjT+i/9rcejp94lPSGqGayBc+xZiVWaX/7v7I8=</Password>
+    <Role>Member</Role>
+  </Member>
+  <Member>
+    <Email>2538172118@gmail.com</Email>
+    <Password>SUPmBTKCX5jEyAwAs0Wyn2zRaLngG8e0QE6UGcX8hwE=</Password>
+    <Role>Member</Role>
+    <DownloadCount>12</DownloadCount>
+    <Tier>Pro</Tier>
+  </Member>
+  <Member>
+    <Email>25381721181@gmail.com</Email>
+    <Password>SUPmBTKCX5jEyAwAs0Wyn2zRaLngG8e0QE6UGcX8hwE=</Password>
+    <Role>Member</Role>
+    <DownloadCount>0</DownloadCount>
+    <Tier>Standard</Tier>
+  </Member>
+</Members>

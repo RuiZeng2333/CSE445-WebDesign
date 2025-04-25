@@ -87,6 +87,51 @@ namespace Assignment5
         protected global::System.Web.UI.WebControls.Button btnWebDownloadTryIt;
 
         /// <summary>
+        /// txtCookieEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCookieEmail;
+
+        /// <summary>
+        /// ddlCookieRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCookieRole;
+
+        /// <summary>
+        /// btnCreateCookie control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCreateCookie;
+
+        /// <summary>
+        /// btnValidateCookie control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnValidateCookie;
+
+        /// <summary>
+        /// lblCookieResult control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCookieResult;
+
+        /// <summary>
         /// btnMember control.
         /// </summary>
         /// <remarks>

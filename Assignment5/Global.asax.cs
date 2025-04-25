@@ -12,7 +12,7 @@ namespace Assignment5
             Application["AppStartTime"] = DateTime.Now;
         }
 
-        protected void Application_BeginRequest(object sender, EventArgs e)
+        /*protected void Application_BeginRequest(object sender, EventArgs e)
         {
             // Redirect logic here
             if (Context.Request.Url.Host.Contains("localhost") ||
@@ -20,6 +20,6 @@ namespace Assignment5
             {
                 Context.Response.RedirectPermanent("http://webstrar66.fulton.asu.edu/page4/Default.aspx");
             }
-        }
+        }*/
     }
 }
