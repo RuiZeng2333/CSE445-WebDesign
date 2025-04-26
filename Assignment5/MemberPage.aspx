@@ -107,7 +107,8 @@
                     </div>
                 </div>
             <div style ="text-align:center; margin-top:20px;">
-                <asp:HyperLink NavigateUrl="http://webstrar66.fulton.asu.edu/Page6/CombinedCoupon.aspx" 
+                <!-- <asp:HyperLink NavigateUrl="http://webstrar66.fulton.asu.edu/Page6/CombinedCoupon.aspx" -->
+                <asp:HyperLink NavigateUrl="~/CombinedCoupon.aspx" 
               CssClass="home-btn" 
               Text="Go Back to Home Page" 
               runat="server" />

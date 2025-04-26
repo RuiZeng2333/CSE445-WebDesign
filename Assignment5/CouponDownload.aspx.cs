@@ -7,6 +7,9 @@ using System.Security.Cryptography;
 using System.Xml;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.IO;
+using System.Net;
+using System.Web.Script.Serialization;
 
 namespace Assignment5WebApp
 {
@@ -17,7 +20,7 @@ namespace Assignment5WebApp
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Authentication and authorization (unchanged)
+            // Authentication and authorization
             HttpCookie cookie = Request.Cookies[COOKIE_NAME];
             if (cookie == null) RedirectToLogin();
 
@@ -32,7 +35,7 @@ namespace Assignment5WebApp
             string signature = parts[1];
 
             string expected;
-            using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(HMAC_KEY))) // Fixed line
+            using (var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(HMAC_KEY)))
             {
                 byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(payload));
                 expected = Convert.ToBase64String(hash);
@@ -58,51 +61,73 @@ namespace Assignment5WebApp
                 return;
             }
 
-            // Update member stats
-            string tier = UpdateMemberStats(email);
+            // Call the MembershipService to update download count
+            string serviceUrl = "~/MembershipService.aspx";
 
-            int couponCount = tier.Equals("Pro", StringComparison.OrdinalIgnoreCase) ? 2 : 1;
-            // Generate PDF with existing logic
-            GeneratePdf(hotelName, address, couponCount, email, tier);  // Always generate 1 coupon
+            // We'll use the current cookie for authentication with the service
+            string tierData = CallMembershipService(serviceUrl);
+
+            // Parse the response
+            var serializer = new JavaScriptSerializer();
+            dynamic result = serializer.Deserialize<dynamic>(tierData);
+
+            string tier = result["tier"];
+            int couponCount = result["coupons"];
+
+            // Generate PDF with coupon count
+            GeneratePdf(hotelName, address, couponCount, email, tier);
         }
 
-        private string UpdateMemberStats(string email)
+        // Method to call the membership service
+        private string CallMembershipService(string serviceUrl)
         {
-            string filePath = Server.MapPath("~/App_Data/Member.xml");
-            var doc = new XmlDocument();
-            doc.XmlResolver = null;
-            doc.Load(filePath);
-
-            XmlNode userNode = doc.SelectSingleNode($"/Members/Member[Email='{email}']");
-            if (userNode == null) return "Standard";
-
-            // Get or create download count
-            XmlNode countNode = userNode.SelectSingleNode("DownloadCount");
-            if (countNode == null)
+            try
             {
-                countNode = doc.CreateElement("DownloadCount");
-                userNode.AppendChild(countNode);
-                countNode.InnerText = "0";
+                // Resolve the relative path to an absolute URL
+                string resolvedPath = ResolveUrl("~/MembershipService.aspx");
+                Uri baseUri = new Uri(Request.Url.GetLeftPart(UriPartial.Authority));
+                Uri fullUri = new Uri(baseUri, resolvedPath);
+
+                // Add the action parameter
+                string fullUrl = fullUri.ToString() + "?action=update";
+
+                // Create request with the current cookie
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(fullUrl);
+                request.CookieContainer = new CookieContainer();
+
+                // Add authentication cookie to the request
+                HttpCookie authCookie = Request.Cookies[COOKIE_NAME];
+                if (authCookie != null)
+                {
+                    Cookie cookie = new Cookie(COOKIE_NAME, authCookie.Value)
+                    {
+                        Domain = baseUri.Host, // Use the current domain (e.g., localhost)
+                        Path = "/"
+                    };
+                    request.CookieContainer.Add(cookie);
+                }
+
+                // Get response
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    string rawResponse = reader.ReadToEnd();
+                    System.Diagnostics.Debug.WriteLine("Service Response: " + rawResponse); // Log the response
+                    return rawResponse;
+                }
             }
-
-            // Update count
-            int downloads = int.Parse(countNode.InnerText) + 1;
-            countNode.InnerText = downloads.ToString();
-
-            // Update tier
-            XmlNode tierNode = userNode.SelectSingleNode("Tier");
-            if (tierNode == null)
+            catch (WebException ex)
             {
-                tierNode = doc.CreateElement("Tier");
-                userNode.AppendChild(tierNode);
-                tierNode.InnerText = "Standard";
+                if (ex.Response != null)
+                {
+                    using (StreamReader reader = new StreamReader(ex.Response.GetResponseStream()))
+                    {
+                        string errorResponse = reader.ReadToEnd();
+                        throw new Exception("Service error: " + errorResponse);
+                    }
+                }
+                throw new Exception("Error calling membership service: " + ex.Message);
             }
-
-            string tier = downloads > 5 ? "Pro" : "Standard";
-            tierNode.InnerText = tier;
-
-            doc.Save(filePath);
-            return tier;
         }
 
         // Pdf generation logic
@@ -116,7 +141,7 @@ namespace Assignment5WebApp
 
                 // Header with tier information
                 doc.Add(new Paragraph("Hotel Coupon", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16)));
-                doc.Add(new Paragraph($"Member Tier: {tier}"));
+                doc.Add(new Paragraph(string.Format("Member Tier: {0}", tier)));
                 doc.Add(new Paragraph("Hotel: " + hotelName));
                 doc.Add(new Paragraph("Address: " + address));
                 doc.Add(new Paragraph("Member: " + member));
@@ -146,7 +171,7 @@ namespace Assignment5WebApp
 
                     string couponCode = String.Format("{0}-{1}-{2}", firstPart, middlePart, lastPart);
 
-                    doc.Add(new Paragraph($"Coupon #{i + 1}:",
+                    doc.Add(new Paragraph(string.Format("Coupon #{0}:", i + 1),
                         FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12)));
                     doc.Add(new Paragraph(couponCode,
                         FontFactory.GetFont(FontFactory.COURIER, 14)));
@@ -160,12 +185,15 @@ namespace Assignment5WebApp
                 Response.ContentType = "application/pdf";
                 Response.AddHeader("Content-Disposition", "attachment; filename=HotelCoupon.pdf");
                 Response.BinaryWrite(pdfBytes);
-                Response.End();
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
             }
         }
 
-        // Rest of the helper methods remain unchanged
-        private void RedirectToLogin() => Response.Redirect("http://webstrar66.fulton.asu.edu/Page0/Login.aspx", true);
+        // Helper methods
+        private void RedirectToLogin()
+        {
+            Response.Redirect("~/Login.aspx", true);
+        }
 
         private bool AreEqual(string a, string b)
         {

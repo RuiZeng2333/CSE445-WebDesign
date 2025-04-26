@@ -50,7 +50,7 @@ namespace Assignment5WebApp
                             }
                             else if (role.Equals("Member", StringComparison.OrdinalIgnoreCase))
                             {
-                                Response.Redirect("http://webstrar66.fulton.asu.edu/Page0/MemberPage.aspx", false);
+                                Response.Redirect("~/MemberPage.aspx", false);
                                 Context.ApplicationInstance.CompleteRequest();
                                 return;
                             }
@@ -59,10 +59,10 @@ namespace Assignment5WebApp
                 }
                 catch
                 {
-                    Response.Redirect("http://webstrar66.fulton.asu.edu/Page0/Login.aspx", true); // go to login if error occur
+                    Response.Redirect("~/Login.aspx", true); // go to login if error occur
                 }
             }
-            Response.Redirect("http://webstrar66.fulton.asu.edu/Page0/Login.aspx", true);
+            Response.Redirect("~/Login.aspx", true);
         }
 
         protected void btnGetHotels_Click(object sender, EventArgs e)
